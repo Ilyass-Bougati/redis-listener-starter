@@ -35,7 +35,7 @@
     <relativePath/>
   </parent>
 
-  <groupId>io.github.Ilyass-Bougati</groupId>
+  <groupId>com.sefault.redis</groupId>
   <artifactId>redis-listener-parent</artifactId>
   <version>1.0.0</version>
   <packaging>pom</packaging>
