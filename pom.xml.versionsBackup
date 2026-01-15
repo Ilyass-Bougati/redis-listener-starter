@@ -37,7 +37,7 @@
 
   <groupId>io.github.Ilyass-Bougati</groupId>
   <artifactId>redis-listener-parent</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <properties>

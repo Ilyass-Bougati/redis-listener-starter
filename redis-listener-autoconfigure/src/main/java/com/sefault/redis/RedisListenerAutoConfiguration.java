@@ -12,7 +12,6 @@ import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 
 @AutoConfiguration
 @ConditionalOnClass(RedisConnectionFactory.class)
-//@ConditionalOnBean(RedisConnectionFactory.class)
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 public class RedisListenerAutoConfiguration {
     private static final Logger log = LoggerFactory.getLogger(RedisListenerAutoConfiguration.class);
