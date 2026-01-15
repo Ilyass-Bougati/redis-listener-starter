@@ -9,9 +9,12 @@
     </option>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 101d416 (A lot)
+=======
+>>>>>>> shit
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/test/pom.xml" />
@@ -19,9 +22,12 @@
       </set>
     </option>
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 101d416 (A lot)
 =======
 >>>>>>> 101d416 (A lot)
+=======
+>>>>>>> shit
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_23" default="true" project-jdk-name="corretto-23" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
