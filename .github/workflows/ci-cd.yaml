@@ -65,4 +65,5 @@ jobs:
         run: |
           mvn clean deploy -pl '!redis-listener-sample' \
             --batch-mode \
-            -Pgpg-signing
+            -Pgpg-signing \
+            -Dgpg.passphrase="${{ secrets.MAVEN_GPG_PASSPHRASE }}"
