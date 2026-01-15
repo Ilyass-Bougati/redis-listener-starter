@@ -26,3 +26,5 @@ public class MessageReceiver {
     }
 }
 ```
+
+However using `@RedisListener` isn't enough, so I added `@RedisJsonListener` which handles listening to JSON specifically and mapping it to objects

@@ -55,11 +55,7 @@ class RedisListenerIntegrationTest {
         public TestReceiver testReceiver() {
             return new TestReceiver();
         }
-
-        @Bean
-        public com.fasterxml.jackson.databind.ObjectMapper objectMapper() {
-            return new com.fasterxml.jackson.databind.ObjectMapper();
-        }
+        
     }
 
     static class TestReceiver {

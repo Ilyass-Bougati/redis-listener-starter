@@ -1,9 +1,11 @@
-package com.sefault.redis;
+package com.sefault.redis.sender;
 
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
+@Order(1)
 @Component
 public class MessageSender implements CommandLineRunner {
     private final StringRedisTemplate redisTemplate;
