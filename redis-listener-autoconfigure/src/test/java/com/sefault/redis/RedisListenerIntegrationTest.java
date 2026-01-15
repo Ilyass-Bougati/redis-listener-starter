@@ -55,7 +55,7 @@ class RedisListenerIntegrationTest {
         public TestReceiver testReceiver() {
             return new TestReceiver();
         }
-        
+
     }
 
     static class TestReceiver {
