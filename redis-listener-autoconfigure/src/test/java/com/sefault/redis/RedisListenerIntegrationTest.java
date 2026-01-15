@@ -1,5 +1,6 @@
 package com.sefault.redis;
 
+import com.sefault.redis.annotation.RedisListener;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -53,6 +54,11 @@ class RedisListenerIntegrationTest {
         @Bean
         public TestReceiver testReceiver() {
             return new TestReceiver();
+        }
+
+        @Bean
+        public com.fasterxml.jackson.databind.ObjectMapper objectMapper() {
+            return new com.fasterxml.jackson.databind.ObjectMapper();
         }
     }
 

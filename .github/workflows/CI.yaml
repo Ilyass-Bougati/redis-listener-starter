@@ -12,7 +12,7 @@ jobs:
     
     defaults:
       run:
-        working-directory: ./server
+        working-directory: .
 
     services:
       redis:

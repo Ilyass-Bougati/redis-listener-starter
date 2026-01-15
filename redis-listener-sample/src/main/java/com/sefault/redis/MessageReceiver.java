@@ -1,5 +1,6 @@
 package com.sefault.redis;
 
+import com.sefault.redis.annotation.RedisListener;
 import org.springframework.stereotype.Service;
 
 @Service
