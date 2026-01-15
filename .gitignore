@@ -36,3 +36,4 @@ build/
 
 ### maven ###
 .m2
+local.deploy.sh
