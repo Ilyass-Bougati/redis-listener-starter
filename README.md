@@ -26,3 +26,14 @@ public class MessageReceiver {
     }
 }
 ```
+
+However using `@RedisListener` isn't enough, so I added `@RedisJsonListener` which handles listening to JSON specifically and mapping it to objects
+```java
+@Service
+public class JsonMessageReceiver {
+    @RedisJsonListener(channel = "json-test-channel", type = Message.class)
+    public void handleJsonMessage(Message message) {
+        System.out.println("SUCCESS! Received message: " + message.id().toString());
+    }
+}
+```

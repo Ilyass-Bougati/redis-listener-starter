@@ -1,5 +1,6 @@
 package com.sefault.redis;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sefault.redis.config.RedisListenerConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,12 @@ import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 @Import(RedisListenerConfig.class)
 public class RedisListenerAutoConfiguration {
     private static final Logger log = LoggerFactory.getLogger(RedisListenerAutoConfiguration.class);
+
+    @Bean
+    @ConditionalOnMissingBean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
+    }
 
     @Bean
     @ConditionalOnMissingBean

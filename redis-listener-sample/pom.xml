@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.sefault.redis</groupId>
         <artifactId>redis-listener-parent</artifactId>
-        <version>1.0.0</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>redis-listener-sample</artifactId>
@@ -22,7 +22,7 @@
         <dependency>
             <groupId>com.sefault.redis</groupId>
             <artifactId>redis-listener-spring-boot-starter</artifactId>
-            <version>1.0.0</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
