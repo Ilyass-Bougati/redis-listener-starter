@@ -1,4 +1,8 @@
-# Redis Listener
+# Redis Listener 
+![redis](https://img.shields.io/badge/redis-%23DD0031.svg?&style=for-the-badge&logo=redis&logoColor=white)
+![Apache Maven](https://img.shields.io/badge/Apache%20Maven-C71A36?style=for-the-badge&logo=Apache%20Maven&logoColor=white)
+![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
+
 This package removes the overhead of configuring redis sub/pub listeners by adding a `@RedisListener` annotation.
 
 ### Adding it
