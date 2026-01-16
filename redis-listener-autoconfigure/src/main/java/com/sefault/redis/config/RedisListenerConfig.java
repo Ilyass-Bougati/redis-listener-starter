@@ -9,7 +9,9 @@ import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.data.redis.connection.MessageListener;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.PatternTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
@@ -29,6 +31,12 @@ public class RedisListenerConfig implements SmartInitializingSingleton {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private Environment environment;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
     @Override
     public void afterSingletonsInstantiated() {
         String[] beanNames = applicationContext.getBeanDefinitionNames();
@@ -41,18 +49,25 @@ public class RedisListenerConfig implements SmartInitializingSingleton {
                 if (method.isAnnotationPresent(RedisListener.class)) {
                     RedisListener ann = method.getAnnotation(RedisListener.class);
                     Class<?> targetType = method.getParameterTypes()[0];
-                    register(bean, method, ann.topic(), targetType, ann.usePattern());
+
+                    String targetErrorChannel = ann.errorChannel();
+
+                    if (targetErrorChannel.isEmpty()) {
+                        targetErrorChannel = environment.getProperty("redis.starter.default-error-channel");
+                    }
+
+                    register(bean, method, ann.topic(), targetType, ann.usePattern(), targetErrorChannel);
                 }
             }
         }
     }
 
-    private void register(Object bean, Method method, String channel, Class<?> type, boolean usePattern) {
+    private void register(Object bean, Method method, String channel, Class<?> type, boolean usePattern, String errorChannel) {
         if (method.getParameterCount() != 1) {
             throw new IllegalStateException("Method " + method.getName() + " must have exactly 1 parameter.");
         }
 
-        MessageListener listener = new ReflectionMessageListener(bean, method, type, objectMapper);
+        MessageListener listener = new ReflectionMessageListener(bean, method, type, objectMapper, errorChannel, stringRedisTemplate);
         if (usePattern) {
             container.addMessageListener(listener, new PatternTopic(channel));
         } else {

@@ -7,6 +7,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.redis.connection.Message;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -21,6 +23,9 @@ class ReflectionMessageListenerTest {
 
     @Mock
     private ObjectMapper objectMapper;
+
+    @Mock
+    private StringRedisTemplate stringRedisTemplate;
 
     @Mock
     private Message redisMessage;
@@ -45,7 +50,9 @@ class ReflectionMessageListenerTest {
                 testService,
                 method,
                 UserEvent.class,
-                objectMapper
+                objectMapper,
+                "error-channel",
+                stringRedisTemplate
         );
 
         listener.onMessage(redisMessage, null);
@@ -63,7 +70,9 @@ class ReflectionMessageListenerTest {
                 testService,
                 method,
                 null,
-                objectMapper
+                objectMapper,
+                "error-channel",
+                stringRedisTemplate
         );
 
         listener.onMessage(redisMessage, null);
@@ -83,7 +92,9 @@ class ReflectionMessageListenerTest {
                 testService,
                 method,
                 UserEvent.class,
-                objectMapper
+                objectMapper,
+                "error-channel",
+                stringRedisTemplate
         );
 
         assertThrows(RuntimeException.class, () -> {

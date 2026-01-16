@@ -20,4 +20,9 @@ public @interface RedisListener {
      * This enables wildcards and topic patterns
      */
     boolean usePattern() default false;
+
+    /**
+     * This sets an error channel to handle errors
+     */
+    String errorChannel() default "";
 }
