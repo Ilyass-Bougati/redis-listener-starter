@@ -24,16 +24,25 @@ public class MessageReceiver {
     public void handleMessage(String message) {
         System.out.println("SUCCESS! Received message: " + message);
     }
+
+    @RedisListener(channel = "test-channel")
+    public void handleMessage(MessageDto message) {
+        System.out.println("SUCCESS! Received message: " + message.getId());
+    }
 }
 ```
 
-However using `@RedisListener` isn't enough, so I added `@RedisJsonListener` which handles listening to JSON specifically and mapping it to objects
+You can also use patterns and wildcards, and you can also define a error topic to send errors in
 ```java
 @Service
-public class JsonMessageReceiver {
-    @RedisJsonListener(channel = "json-test-channel", type = Message.class)
-    public void handleJsonMessage(Message message) {
-        System.out.println("SUCCESS! Received message: " + message.id().toString());
+public class MessageReceiver {
+    @RedisListener(channel = "test-*", errorChannel="test-error-channel")
+    public void handleMessage(String message) {
+        System.out.println("SUCCESS! Received message: " + message);
     }
 }
+```
+you can also define a default error channel in your `application.properties`
+```properties
+redis.starter.default-error-channel=test-error-channel
 ```
