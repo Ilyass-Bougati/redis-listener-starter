@@ -69,7 +69,7 @@ class ReflectionMessageListenerTest {
         ReflectionMessageListener listener = new ReflectionMessageListener(
                 testService,
                 method,
-                null,
+                String.class,
                 objectMapper,
                 "error-channel",
                 stringRedisTemplate

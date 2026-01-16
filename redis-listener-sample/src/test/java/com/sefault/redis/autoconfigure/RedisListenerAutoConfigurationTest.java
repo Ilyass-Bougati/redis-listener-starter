@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,6 +25,7 @@ class RedisListenerAutoConfigurationTest {
     void containerIsCreated_whenConnectionFactoryExists() {
         contextRunner
                 .withBean(RedisConnectionFactory.class, () -> mock(RedisConnectionFactory.class))
+                .withBean(StringRedisTemplate.class, () -> mock(StringRedisTemplate.class))
                 .run(context -> {
                     assertThat(context).hasSingleBean(RedisMessageListenerContainer.class);
                     assertThat(context).hasSingleBean(RedisListenerConfig.class);
