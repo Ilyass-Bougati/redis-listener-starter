@@ -14,5 +14,15 @@ public @interface RedisListener {
     /**
      * The Redis channel/topic to subscribe to.
      */
-    String channel();
+    String topic();
+
+    /**
+     * This enables wildcards and topic patterns
+     */
+    boolean usePattern() default false;
+
+    /**
+     * This sets an error channel to handle errors
+     */
+    String errorChannel() default "";
 }

@@ -2,7 +2,6 @@ package com.sefault.redis.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sefault.redis.ReflectionMessageListener;
-import com.sefault.redis.annotation.RedisJsonListener;
 import com.sefault.redis.annotation.RedisListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,8 +9,11 @@ import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.data.redis.connection.MessageListener;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
+import org.springframework.data.redis.listener.PatternTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 
 import java.lang.reflect.Method;
@@ -29,6 +31,12 @@ public class RedisListenerConfig implements SmartInitializingSingleton {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private Environment environment;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
     @Override
     public void afterSingletonsInstantiated() {
         String[] beanNames = applicationContext.getBeanDefinitionNames();
@@ -38,27 +46,33 @@ public class RedisListenerConfig implements SmartInitializingSingleton {
             Class<?> beanClass = bean.getClass();
 
             for (Method method : beanClass.getMethods()) {
-
                 if (method.isAnnotationPresent(RedisListener.class)) {
                     RedisListener ann = method.getAnnotation(RedisListener.class);
-                    register(bean, method, ann.channel(), null);
-                }
+                    Class<?> targetType = method.getParameterTypes()[0];
 
-                else if (method.isAnnotationPresent(RedisJsonListener.class)) {
-                    RedisJsonListener ann = method.getAnnotation(RedisJsonListener.class);
-                    register(bean, method, ann.channel(), ann.type());
+                    String targetErrorChannel = ann.errorChannel();
+
+                    if (targetErrorChannel.isEmpty()) {
+                        targetErrorChannel = environment.getProperty("redis.starter.default-error-channel");
+                    }
+
+                    register(bean, method, ann.topic(), targetType, ann.usePattern(), targetErrorChannel);
                 }
             }
         }
     }
 
-    private void register(Object bean, Method method, String channel, Class<?> type) {
+    private void register(Object bean, Method method, String channel, Class<?> type, boolean usePattern, String errorChannel) {
         if (method.getParameterCount() != 1) {
             throw new IllegalStateException("Method " + method.getName() + " must have exactly 1 parameter.");
         }
 
-        MessageListener listener = new ReflectionMessageListener(bean, method, type, objectMapper);
-        container.addMessageListener(listener, new ChannelTopic(channel));
+        MessageListener listener = new ReflectionMessageListener(bean, method, type, objectMapper, errorChannel, stringRedisTemplate);
+        if (usePattern) {
+            container.addMessageListener(listener, new PatternTopic(channel));
+        } else {
+            container.addMessageListener(listener, new ChannelTopic(channel));
+        }
         logger.debug("Registered Redis listener: " + method.getName() + " on channel " + channel);
     }
 }

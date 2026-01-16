@@ -62,7 +62,7 @@ class RedisListenerIntegrationTest {
         private final CountDownLatch latch = new CountDownLatch(1);
         private String lastMessage;
 
-        @RedisListener(channel = "integration-test")
+        @RedisListener(topic = "integration-test")
         public void receive(String message) {
             System.out.println("LISTENER: Caught message -> " + message);
             this.lastMessage = message;

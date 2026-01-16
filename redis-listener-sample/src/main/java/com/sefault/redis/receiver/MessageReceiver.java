@@ -1,20 +1,27 @@
 package com.sefault.redis.receiver;
 
-import com.sefault.redis.annotation.RedisJsonListener;
 import com.sefault.redis.annotation.RedisListener;
 import com.sefault.redis.dto.Message;
-import com.sefault.redis.sender.MessageSender;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MessageReceiver {
-    @RedisListener(channel = "test-channel")
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @RedisListener(topic = "test-channel")
     public void handleMessage(String message) {
-        System.out.println("SUCCESS! Received message: " + message);
+        logger.info("Successfully handled normal message: {}", message);
     }
 
-    @RedisJsonListener(channel = "json-test-channel", type = Message.class)
+    @RedisListener(topic = "test-json-channel")
     public void handleJsonMessage(Message message) {
-        System.out.println("SUCCESS! Received message: " + message.id().toString());
+        logger.info("Successfully handled json message: {}", message.id().toString());
+    }
+
+    @RedisListener(topic = "test-*", usePattern = true)
+    public void handleBoth(String message) {
+        logger.info("Successfully handled message using pattern: {}", message);
     }
 }
