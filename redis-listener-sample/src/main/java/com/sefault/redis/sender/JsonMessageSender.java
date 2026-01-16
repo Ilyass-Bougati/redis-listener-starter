@@ -21,7 +21,7 @@ public class JsonMessageSender implements CommandLineRunner {
         System.out.println("Sending test message in 2 seconds...");
         Thread.sleep(2000);
 
-        String json = "{\"id\":\"" + UUID.randomUUID().toString() + "\",\"message\":\"test\"";
+        String json = "{\"id\":\"" + UUID.randomUUID().toString() + "\",\"message\":\"test\"}";
         redisTemplate.convertAndSend("test-json-channel", json);
     }
 }
