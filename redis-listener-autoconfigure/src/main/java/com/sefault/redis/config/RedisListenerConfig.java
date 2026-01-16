@@ -12,6 +12,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.listener.ChannelTopic;
+import org.springframework.data.redis.listener.PatternTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 
 import java.lang.reflect.Method;
@@ -41,24 +42,28 @@ public class RedisListenerConfig implements SmartInitializingSingleton {
 
                 if (method.isAnnotationPresent(RedisListener.class)) {
                     RedisListener ann = method.getAnnotation(RedisListener.class);
-                    register(bean, method, ann.channel(), null);
+                    register(bean, method, ann.topic(), null, ann.usePattern());
                 }
 
                 else if (method.isAnnotationPresent(RedisJsonListener.class)) {
                     RedisJsonListener ann = method.getAnnotation(RedisJsonListener.class);
-                    register(bean, method, ann.channel(), ann.type());
+                    register(bean, method, ann.topic(), ann.type(), ann.usePattern());
                 }
             }
         }
     }
 
-    private void register(Object bean, Method method, String channel, Class<?> type) {
+    private void register(Object bean, Method method, String channel, Class<?> type, boolean usePattern) {
         if (method.getParameterCount() != 1) {
             throw new IllegalStateException("Method " + method.getName() + " must have exactly 1 parameter.");
         }
 
         MessageListener listener = new ReflectionMessageListener(bean, method, type, objectMapper);
-        container.addMessageListener(listener, new ChannelTopic(channel));
+        if (usePattern) {
+            container.addMessageListener(listener, new PatternTopic(channel));
+        } else {
+            container.addMessageListener(listener, new ChannelTopic(channel));
+        }
         logger.debug("Registered Redis listener: " + method.getName() + " on channel " + channel);
     }
 }

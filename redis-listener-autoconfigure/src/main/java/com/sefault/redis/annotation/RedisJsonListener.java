@@ -11,10 +11,15 @@ public @interface RedisJsonListener {
     /**
      * The Redis channel/topic to subscribe to.
      */
-    String channel();
+    String topic();
 
     /**
      * The class type to deserialize the JSON into.
      */
     Class<?> type();
+
+    /**
+     * This enables wildcards and topic patterns
+     */
+    boolean usePattern() default false;
 }
