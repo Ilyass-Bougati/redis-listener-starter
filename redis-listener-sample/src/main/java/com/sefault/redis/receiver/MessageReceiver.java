@@ -1,6 +1,5 @@
 package com.sefault.redis.receiver;
 
-import com.sefault.redis.annotation.RedisJsonListener;
 import com.sefault.redis.annotation.RedisListener;
 import com.sefault.redis.dto.Message;
 import org.slf4j.Logger;
@@ -16,7 +15,7 @@ public class MessageReceiver {
         logger.info("Successfully handled normal message: {}", message);
     }
 
-    @RedisJsonListener(topic = "test-json-channel", type = Message.class)
+    @RedisListener(topic = "test-json-channel")
     public void handleJsonMessage(Message message) {
         logger.info("Successfully handled json message: {}", message.id().toString());
     }

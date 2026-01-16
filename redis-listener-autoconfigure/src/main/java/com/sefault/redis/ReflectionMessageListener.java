@@ -5,6 +5,7 @@ import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
 
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 
 public class ReflectionMessageListener implements MessageListener {
     private final Object bean;
@@ -22,11 +23,11 @@ public class ReflectionMessageListener implements MessageListener {
     @Override
     public void onMessage(Message message, byte[] pattern) {
         try {
-            byte[] body = message.getBody();
             Object argument;
+            byte[] body = message.getBody();
 
-            if (targetType == null) {
-                argument = new String(body);
+            if (targetType.equals(String.class)) {
+                argument = new String(body, StandardCharsets.UTF_8);
             } else {
                 argument = objectMapper.readValue(body, targetType);
             }

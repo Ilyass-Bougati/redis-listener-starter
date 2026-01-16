@@ -2,7 +2,6 @@ package com.sefault.redis.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sefault.redis.ReflectionMessageListener;
-import com.sefault.redis.annotation.RedisJsonListener;
 import com.sefault.redis.annotation.RedisListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,15 +38,10 @@ public class RedisListenerConfig implements SmartInitializingSingleton {
             Class<?> beanClass = bean.getClass();
 
             for (Method method : beanClass.getMethods()) {
-
                 if (method.isAnnotationPresent(RedisListener.class)) {
                     RedisListener ann = method.getAnnotation(RedisListener.class);
-                    register(bean, method, ann.topic(), null, ann.usePattern());
-                }
-
-                else if (method.isAnnotationPresent(RedisJsonListener.class)) {
-                    RedisJsonListener ann = method.getAnnotation(RedisJsonListener.class);
-                    register(bean, method, ann.topic(), ann.type(), ann.usePattern());
+                    Class<?> targetType = method.getParameterTypes()[0];
+                    register(bean, method, ann.topic(), targetType, ann.usePattern());
                 }
             }
         }
