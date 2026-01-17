@@ -1,8 +1,6 @@
 package com.sefault.redis;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.connection.Message;
@@ -35,8 +33,6 @@ public class ReflectionMessageListener implements MessageListener {
         this.method = method;
         this.targetType = targetType;
         this.objectMapper = objectMapper;
-        this.objectMapper.registerModule(new JavaTimeModule());
-        this.objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         this.finalErrorChannel = finalErrorChannel;
         this.stringRedisTemplate = stringRedisTemplate;
     }
