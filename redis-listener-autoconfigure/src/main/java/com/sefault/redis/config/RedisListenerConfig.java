@@ -5,6 +5,7 @@ import com.sefault.redis.ReflectionMessageListener;
 import com.sefault.redis.annotation.RedisListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -43,9 +44,9 @@ public class RedisListenerConfig implements SmartInitializingSingleton {
 
         for (String beanName : beanNames) {
             Object bean = applicationContext.getBean(beanName);
-            Class<?> beanClass = bean.getClass();
+            Class<?> targetClass = AopUtils.getTargetClass(bean);
 
-            for (Method method : beanClass.getMethods()) {
+            for (Method method : targetClass.getMethods()) {
                 if (method.isAnnotationPresent(RedisListener.class)) {
                     RedisListener ann = method.getAnnotation(RedisListener.class);
                     Class<?> targetType = method.getParameterTypes()[0];
