@@ -1,3 +1,5 @@
+> Deprecated. This starter provided annotation-driven Redis Pub/Sub before it existed in the framework. As of spring-data-redis 4.1, `@RedisListener` is supported natively (see [#3321](https://github.com/spring-projects/spring-data-redis/pull/3321)). Use the framework's built-in support instead.
+
 # Redis Listener 
 ![redis](https://img.shields.io/badge/redis-%23DD0031.svg?&style=for-the-badge&logo=redis&logoColor=white)
 ![Apache Maven](https://img.shields.io/badge/Apache%20Maven-C71A36?style=for-the-badge&logo=Apache%20Maven&logoColor=white)
