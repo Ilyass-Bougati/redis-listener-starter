@@ -13,12 +13,12 @@ First you can add this package to your application by adding it to your `pom.xml
 <dependency>
     <groupId>com.sefault.redis</groupId>
     <artifactId>redis-listener-spring-boot-starter</artifactId>
-    <version>1.2.0</version>
+    <version>1.4.0</version>
 </dependency>
 ```
 if you're using Gradle you can add it to your `build.gradle`
 ```gradle
-implementation("com.sefault.redis:redis-listener-spring-boot-starter:1.2.0")
+implementation("com.sefault.redis:redis-listener-spring-boot-starter:1.4.0")
 ```
 
 ### Using it
