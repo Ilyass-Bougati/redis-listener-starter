@@ -7,7 +7,12 @@ import java.lang.annotation.Target;
 
 /**
  * Marks a method as a listener for Redis messages.
+ *
+ * @deprecated Use the official {@code org.springframework.data.redis.annotation.RedisListener},
+ * available since spring-data-redis 4.1, instead. This annotation will be removed in a future
+ * release.
  */
+@Deprecated(forRemoval = true)
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RedisListener {
